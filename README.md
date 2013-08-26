@@ -45,16 +45,22 @@ Sample settings:
     "port"     : "22",
     "username" : "tnhu",
     "local"    : "/Users/tnhu/workspace/trunk",
-    "remote"   : "/home/tnhu/workspace/trunk"
+    "remote"   : "/home/tnhu/workspace/trunk",
+    "auto"     : false
   }, {
     "type"     : "local",
     "local"    : "/Users/tnhu/Library/Application Support/Sublime Text 2/Packages/SimpleSync",
-    "remote"   : "/Users/tnhu/Dropbox/projects/SimpleSync"
+    "remote"   : "/Users/tnhu/Dropbox/projects/SimpleSync",
+    "auto"     : true
   }]
 }
 ```
 
 Files are saved to remote server automatically when you save them locally. In case of "local" syncing, they are copied to "remote" folder which is on the same machine.
+
+When auto is set to false, you can upload the file manually by adding a key binding like this:
+
+{ "keys": ["ctrl+super+u"], "command": "deploy"}
 
 ## Contributors
 
