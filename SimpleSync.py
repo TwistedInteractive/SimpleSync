@@ -66,7 +66,7 @@ class ScpCopier(threading.Thread):
     remote  = self.username + "@" + self.host + ":" + self.remote_file
 
     print("SimpleSync: ", self.local_file, " -> ", remote)
-
+    sublime.status_message("Deployed to " + remote)
     for line in runProcess(["scp", "-r", "-P", str(self.port) , self.local_file, remote]):
       print(line, end='')
 
@@ -80,7 +80,8 @@ class LocalCopier(threading.Thread):
     threading.Thread.__init__(self)
 
   def run(self):
-    print("SimpleSync: ", self.local_file, " -> ", self.remote_file)
+    print("SimpleSync: ", self.local_file + " -> " + self.remote_file)
+    sublime.status_message("Deployed to " + self.remote_file)
     shutil.copy2(self.local_file, self.remote_file)
 
 #
