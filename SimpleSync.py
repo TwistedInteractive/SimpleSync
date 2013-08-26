@@ -87,30 +87,33 @@ class LocalCopier(threading.Thread):
 #
 # Subclass sublime_plugin.EventListener
 #
-# class SimpleSync(sublime_plugin.EventListener):
-#   def on_post_save(self, view):
-#     local_file = view.file_name()
-#     syncItems  = getSyncItem(local_file)
+class SimpleSync(sublime_plugin.EventListener):
+  def on_post_save(self, view):
+    local_file = view.file_name()
+    syncItems  = getSyncItem(local_file)
 
-#     if (len(syncItems) > 0):
-#       for item in syncItems:
-#         remote_file = local_file.replace(item["local"], item["remote"])
+    if (len(syncItems) > 0):
+      for item in syncItems:
+        remote_file = local_file.replace(item["local"], item["remote"])
+        if (item["auto"] == False):
+          return
 
-#         if (item["type"] == "ssh"):
-#           ScpCopier(item["host"], item["username"], local_file, remote_file, port=item["port"]).start()
-#         elif (item["type"] == "local"):
-#           LocalCopier(local_file, remote_file).start()
+        if (item["type"] == "ssh"):
+          ScpCopier(item["host"], item["username"], local_file, remote_file, port=item["port"]).start()
+        elif (item["type"] == "local"):
+          LocalCopier(local_file, remote_file).start()
 
-class DeployCommand(sublimeplugin.TextCommand):
-    def run(self, view, args):
-      local_file = view.file_name()
-      syncItems  = getSyncItem(local_file)
+class DeployCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        view=sublime.active_window().active_view();
+        local_file = view.file_name()
+        syncItems  = getSyncItem(local_file)
 
-      if (len(syncItems) > 0):
-        for item in syncItems:
-          remote_file = local_file.replace(item["local"], item["remote"])
+        if (len(syncItems) > 0):
+          for item in syncItems:
+            remote_file = local_file.replace(item["local"], item["remote"])
 
-          if (item["type"] == "ssh"):
-            ScpCopier(item["host"], item["username"], local_file, remote_file, port=item["port"]).start()
-          elif (item["type"] == "local"):
-            LocalCopier(local_file, remote_file).start()
+            if (item["type"] == "ssh"):
+              ScpCopier(item["host"], item["username"], local_file, remote_file, port=item["port"]).start()
+            elif (item["type"] == "local"):
+              LocalCopier(local_file, remote_file).start()
