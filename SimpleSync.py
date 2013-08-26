@@ -14,6 +14,7 @@ import sublime
 import sublime_plugin
 import subprocess
 import threading
+import shutil
 
 #
 # Run a process
@@ -80,9 +81,7 @@ class LocalCopier(threading.Thread):
 
   def run(self):
     print("SimpleSync: ", self.local_file, " -> ", self.remote_file)
-
-    for line in runProcess(['cp', self.local_file, self.remote_file]):
-      print(line, end='')
+    shutil.copy2(self.local_file, self.remote_file)
 
 #
 # Subclass sublime_plugin.EventListener
