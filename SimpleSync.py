@@ -81,7 +81,6 @@ class LocalCopier(threading.Thread):
 
   def run(self):
     print("SimpleSync: ", self.local_file + " -> " + self.remote_file)
-    sublime.status_message("Deployed to " + self.remote_file)
     shutil.copy2(self.local_file, self.remote_file)
 
 #
@@ -117,3 +116,4 @@ class DeployCommand(sublime_plugin.WindowCommand):
               ScpCopier(item["host"], item["username"], local_file, remote_file, port=item["port"]).start()
             elif (item["type"] == "local"):
               LocalCopier(local_file, remote_file).start()
+              sublime.status_message("Deployed to " + self.remote_file)
